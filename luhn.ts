@@ -2,16 +2,15 @@ import * as readline from 'node:readline';
 import { stdin as input, stdout as output } from 'node:process';
 const rl = readline.createInterface({ input, output });
 
-const error: number = 0;
-const success: number = 42;
+const error: number = 42;
+const success: number = 0;
 
-function checkLuhn(userInput: string)
+function checkLuhn(userInput: string) : boolean
 {
-    let length: number = userInput.length;
     let sum: number = 0;
     let isSecond: boolean = false;
     
-    for (let i: number = (length - 1); i >= 0; i--)
+    for (let i: number = (userInput.length - 1); i >= 0; i--)
     {
         let digit = parseInt(userInput[i], 10);
         
@@ -24,10 +23,10 @@ function checkLuhn(userInput: string)
         sum += digit;
         isSecond = !isSecond;
     }
-        return sum % 10 ? error : success;
+    return sum % 10 === 0;
 }
 
-rl.question("Enter a credit card number: ", (answer) =>
+rl.question("Enter a credit card number: ", (answer: string) =>
 {
     let cardNumber: string = answer.replace(/\s/g, "");
     const hasNonDigits: RegExp = /\D/g;
@@ -39,7 +38,7 @@ rl.question("Enter a credit card number: ", (answer) =>
     }
     else
     {
-        if (checkLuhn(cardNumber) === success)
+        if (checkLuhn(cardNumber))
         {
             console.log("✅ Valid!\tCode: " + success);
             process.exit(success);
